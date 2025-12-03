@@ -47,13 +47,18 @@ freeDoF=setdiff(1:numDoFs,prescribedDoF); %list of free DoFs
 % Initialise a vector for displacement BCs
 u_prescribed=zeros(numDoFs,1);
 % Prescribed displacements
-u_prescribed(rightXDoF)=1e-7; %right edge moves 0.01 m to the right
+u_prescribed(rightXDoF)=1e-7; % right edge moves 100 nm to the right
 
 % Surface traction
 Fs = zeros(numDoFs,1); %define global force vector for surface traction
 % Traction free on top and bottom sides already implied since Fs is
 % initialised to zero anyway.
 
+% Impose a point load to bend the bar
+% Define the point load at the center of the bar
+pointLoad = 1; % magnitude of the point load 1 N
+loadNode = round(numNodes(1) / 2); % node at the center in x-direction
+Fs((loadNode-1)*2+2) = pointLoad; % apply load in the y-direction
 
 %% Solution 
 F=Fb+Fs; %total load vector
